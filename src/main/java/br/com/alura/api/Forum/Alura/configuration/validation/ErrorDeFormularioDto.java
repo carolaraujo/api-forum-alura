@@ -1,4 +1,4 @@
-package br.com.alura.api.Forum.config.validacao;
+package br.com.alura.api.Forum.Alura.configuration.validation;
 
 public class ErrorDeFormularioDto {
 
@@ -17,5 +17,4 @@ public class ErrorDeFormularioDto {
 	public String getErro() {
 		return erro;
 	}
-
 }

@@ -1,4 +1,4 @@
-package br.com.alura.api.Forum.config.validacao;
+package br.com.alura.api.Forum.Alura.configuration.validation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
 @RestControllerAdvice
 public class ErroDeValidacaoHandler {
-	
+
 	@Autowired
 	private MessageSource MessageSource;
 
