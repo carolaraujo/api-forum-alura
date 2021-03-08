@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import br.com.alura.api.Forum.Alura.repository.UsuarioRepository;
 
 @EnableWebSecurity
 @Configuration
@@ -19,6 +22,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private AutenticacaoService autenticacaoService;
+	
+	@Autowired
+	private TokenService tokenService;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	
 	@Override
 	@Bean
@@ -40,9 +49,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.antMatchers(HttpMethod.GET, "/topicos").permitAll() // permitindo a url topicos
 			.antMatchers(HttpMethod.GET, "/topicos/*").permitAll() // permitindo tudo em tópicos
 			.antMatchers(HttpMethod.POST, "/auth").permitAll() // permitindo a url auth
+			.antMatchers(HttpMethod.GET, "/actuator/*").permitAll() // permitindo a url do método actuator
 			.anyRequest().authenticated()
 			.and().csrf().disable() // csrf é um tipo de ataque hacker
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // política de criação de sessao
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // política de criação de sessao
+			.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
 		}
 		
 		//configuracao de recursos estáticos(css, js, imagens)
